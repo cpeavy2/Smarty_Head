@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+
+<robot name="MockBOT" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!-- Define robot constants -->
+  <xacro:property name="base_width" value="0.31"/>
+  <xacro:property name="base_height" value="0.18"/>
+
+  <xacro:property name="wheel_radius" value="0.04"/>
+  <xacro:property name="wheel_width" value="0.013"/>
+  <xacro:property name="wheel_ygap" value="0.0"/>
+  <xacro:property name="wheel_zoff" value="0.02"/>
+  <xacro:property name="wheel_xoff" value="0.00"/>
+
+  <!-- Robot Base -->
+  <link name="base_link">
+    <visual>
+	<geometry>
+        <cylinder length="0.08" radius="0.16"/>
+	</geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- Robot Footprint -->
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_footprint"/>
+    <origin xyz="0.0 0.0 -0.038" rpy="0 0 0"/>
+  </joint>
+
+  <origin xyz="0 0 0" rpy="0 0 0"  name="odom" />
+
+   <!-- Wheels -->
+    <link name="drivewhl_l_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="Gray">
+          <color rgba="0.5 0.5 0.5 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="drivewhl_l_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="drivewhl_l_link"/>
+      <origin xyz="${-1*wheel_xoff} ${1*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+   <!-- Wheels -->
+    <link name="drivewhl_r_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+            <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+        <material name="Gray">
+          <color rgba="0.5 0.5 0.5 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="drivewhl_r_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="drivewhl_r_link"/>
+      <origin xyz="${-1*wheel_xoff} ${-1*(base_width/2+wheel_ygap)} ${-wheel_zoff}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+  <!-- Caster Wheels -->
+  <link name="rear_caster">
+    <visual>
+      <geometry>
+        <sphere radius=".02"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="caster_joint1" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_caster"/>
+      <origin xyz="0.13 0.0 -0.05" rpy="0 0 0"/>
+  </joint>
+
+  <link name="front_caster">
+    <visual>
+      <geometry>
+        <sphere radius=".02"/>
+      </geometry>
+      <material name="Cyan">
+        <color rgba="0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="caster_joint2" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_caster"/>
+      <origin xyz="-0.13 0.0 -0.05" rpy="0 0 0"/>  
+  </joint>
+
+    <link name="top_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.02" radius="0.17"/>
+          <!-- <mesh filename="" scale="0.001 0.001 0.001"/> -->
+        </geometry>
+        <material name="yellow">
+          <color rgba="0.8784 0.6627 0.6627 1.0"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.02" radius="0.17"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="top_to_base" type="fixed">
+      <parent link="base_link"/>
+      <child link="top_link"/>
+      <origin xyz="0 0 0.33" rpy="0 0 0"/>
+    </joint>
+
+  <link name="left_front_leg_link">
+    <visual>
+      <origin xyz="-0.077 0.077 0.175" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+       <material name="blue">
+            <color rgba="0.1764 0.4588 0.8509 1.0"/>
+       </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+    </collision>
+  </link>
+
+    <joint name="left_front_leg_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <parent link="base_link"/>
+      <child link="left_front_leg_link"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="right_front_leg_link">
+    <visual>
+      <origin xyz=".077 -.077 0.175" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+       <material name="blue">
+            <color rgba="0.1764 0.4588 0.8509 1.0"/>
+       </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+    </collision>
+  </link>
+
+    <joint name="right_front_leg_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <parent link="base_link"/>
+      <child link="right_front_leg_link"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+
+
+  <link name="left_rear_leg_link">
+    <visual>
+      <origin xyz="-0.077 -0.077 0.175" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+       <material name="blue">
+            <color rgba="0.1764 0.4588 0.8509 1.0"/>
+       </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+    </collision>
+  </link>
+
+    <joint name="left_rear_leg_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <parent link="base_link"/>
+      <child link="left_rear_leg_link"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="right_rear_leg_link">
+    <visual>
+      <origin xyz=".077 .077 0.175" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+       <material name="blue">
+            <color rgba="0.1764 0.4588 0.8509 1.0"/>
+       </material>
+    </visual>
+    <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0125" length="0.3"/>
+        </geometry>
+    </collision>
+  </link>
+
+    <joint name="right_rear_leg_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <parent link="base_link"/>
+      <child link="right_rear_leg_link"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0375" length="0.025"/>
+        </geometry>
+       <material name="green">
+          <color rgba="0.003 0.639 0.223 1.0"/>
+       </material>
+  </visual>
+  <collision>
+        <origin xyz="0 0 -0.025" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0375" length="0.05"/>
+        </geometry>
+    </collision>
+  </link>
+
+    <joint name="lidar_joint" type="fixed">
+      <axis xyz="0 0 1" />
+      <parent link="base_link"/>
+      <child link="lidar_link"/>
+      <origin xyz="0.0 0.0 0.05" rpy="0 0 0"/>
+  </joint>
+
+    <link name="camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.030 0.124 0.030"/>
+        </geometry>
+        <material name="red">
+          <color rgba="0.416 0.051 0.047 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.030 0.124 0.030"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="camera_joint" type="fixed">
+      <origin xyz="0.077 0 .25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="camera_link"/>
+    </joint>
+
+    <link name="sonar_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.01" length="0.05"/>
+        </geometry>
+       <material name="yellow">
+          <color rgba="1.0 1.0 0.0 1.0"/>
+       </material>
+      </visual>
+
+    </link>
+<joint name="ultrasonic_sensor_joint" type="fixed">
+  <parent link="base_link"/>  <!-- Link to which the ultrasonic sensor is attached -->
+  <child link="sonar_link"/>
+  <origin xyz="0.10 0.0 0.29" rpy="0 0 0"/>  <!-- Position and orientation of the sensor relative to the parent link -->
+</joint>
+
+</robot>
+
