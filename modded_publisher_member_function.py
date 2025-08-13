@@ -39,7 +39,7 @@ class MinimalPublisher(Node):
         rg = p.distance()
         r = Range()
         r.header.stamp = self.get_clock().now().to_msg()
-        r.header.frame_id = "/sonar_link"
+        r.header.frame_id = "sonar_link"
         r.radiation_type = 0
         r.field_of_view = .31
         r.min_range = .02
