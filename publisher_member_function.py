@@ -44,7 +44,7 @@ class MinimalPublisher(Node):
         r.field_of_view = .31
         r.min_range = .02
         r.max_range = 1.4
-        r.range = rg
+        r.range = rg if rg < r.max_range else r.max_range
         self.publisher_.publish(r)
 
 def main(args=None):
